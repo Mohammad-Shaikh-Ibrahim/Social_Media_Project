@@ -1,0 +1,87 @@
+:root {
+    --custom-primary: #A78BFA; /* بنفسجي فاتح */
+    --custom-secondary: #D8B4FE; /* لون بنفسجي هادئ */
+    --custom-dark: #6D28D9; /* بنفسجي غامق */
+    --custom-light: #F3E8FF; /* خلفية فاتحة */
+    --custom-light-nav: #e9d6fe; /* خلفية فاتحة */
+    --custom-accent: #8B5CF6; /* لون مميز */
+  }
+  
+  /* تخصيص خلفية الصفحة */
+  body {
+    background-color: var(--custom-light);
+    color: var(--custom-dark);
+    font-family: 'Arial', sans-serif;
+  }
+  
+  /* تخصيص خلفيات */
+  .bg-primary {
+    background-color: var(--custom-primary) !important;
+  }
+  .bg-secondary {
+    background-color: var(--custom-secondary) !important;
+  }
+  .bg-light {
+    background-color: var(--custom-light) !important;
+  }
+  .text-primary {
+    color: var(--custom-primary) !important;
+  }
+  .text-dark {
+    color: var(--custom-dark) !important;
+  }
+  .text-accent {
+    color: var(--custom-accent) !important;
+  }
+  
+  /* تخصيص الأزرار */
+  .btn-primary {
+    background-color: var(--custom-primary) !important;
+    border-color: var(--custom-primary) !important;
+    color: white !important;
+  }
+  .btn-outline-primary {
+    color: var(--custom-primary) !important;
+    border-color: var(--custom-primary) !important;
+  }
+  .btn-primary:hover {
+    background-color: var(--custom-dark) !important;
+    border-color: var(--custom-dark) !important;
+  }
+  
+  /* تخصيص النافبار */
+  .navbar {
+    background-color: var(--custom-light-nav) !important;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.5);
+  }
+  .navbar-brand span {
+    color: var(--custom-dark) !important;
+    font-size: 1.2rem;
+    font-weight: bold;
+  }
+  .nav-link {
+    color: var(--custom-dark) !important;
+    font-weight: 500;
+  }
+  .nav-link:hover {
+    color: var(--custom-primary) !important;
+  }
+  
+  /* تخصيص المربعات */
+  .container-content {
+    background-color: var(--custom-secondary);
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+  .image-container {
+    width: 100%; /* عرض الحاوية */
+    height: 300px; /* ارتفاع الحاوية */
+    overflow: hidden; /* إخفاء الجزء الزائد من الصورة */
+    border-radius: 8px; /* حواف مستديرة (اختياري) */
+  }
+  
+  .image-container img {
+    width: 100%; /* عرض الصورة 100% من الحاوية */
+    height: 100%; /* ارتفاع الصورة 100% من الحاوية */
+  }
