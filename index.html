@@ -3,74 +3,241 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="icon" type="image/svg+xml" href="./assets/images/logo.jpg" sizes="32x32" />
+    <link
+      rel="icon"
+      type="image/svg+xml"
+      href="./assets/images/logo.jpg"
+      sizes="32x32"
+    />
     <title>Home</title>
     <!-- Bootstrap -->
-    <link rel="stylesheet" href="./node_modules/bootstrap/dist/css/bootstrap.min.css" />
+    <link
+      rel="stylesheet"
+      href="./node_modules/bootstrap/dist/css/bootstrap.min.css"
+    />
     <script src="./node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
-    <script src="./node_modules/axios/dist/axios.min.js"></script>
-    <link rel="stylesheet" href="./node_modules/bootstrap-icons/font/bootstrap-icons.min.css">
-    
+    <link
+      rel="stylesheet"
+      href="./node_modules/bootstrap-icons/font/bootstrap-icons.min.css"
+    />
+    <script src="./node_modules/axios/dist/axios.js"></script>
+    <script type="module" src="index.js"></script>
+
     <!-- Custom CSS -->
     <link rel="stylesheet" href="./assets/CSS/home.css" />
   </head>
   <body>
     <!-- Navbar -->
-     <div class="container">
-        <nav class="navbar navbar-expand-lg rounded-bottom-3">
-            <div class="container">
-              <a class="navbar-brand d-flex align-items-center" href="#">
-                <img  src="./assets/images/logo.jpg" alt="Linkora Logo" width="60" height="60" class="me-2 rounded-circle" />
-                <span>Linkora</span>
-              </a>
-              <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" 
-                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
+    <div class="container">
+      <nav class="navbar navbar-expand-lg rounded-bottom-3">
+        <div class="container">
+          <a class="navbar-brand d-flex align-items-center" href="#">
+            <img
+              src="./assets/images/logo.jpg"
+              alt="Linkora Logo"
+              width="60"
+              height="60"
+              class="me-2 rounded-circle"
+            />
+            <span>Linkora</span>
+          </a>
+          <button
+            class="navbar-toggler"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#navbarNav"
+            aria-controls="navbarNav"
+            aria-expanded="false"
+            aria-label="Toggle navigation"
+          >
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div
+            class="collapse navbar-collapse justify-content-between"
+            id="navbarNav"
+          >
+            <ul class="navbar-nav">
+              <li class="nav-item">
+                <a class="nav-link active" href="#">Home</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#">Profile</a>
+              </li>
+            </ul>
+            <div class="d-flex gap-2">
+              <button
+                class="btn btn-primary px-4"
+                data-bs-toggle="modal"
+                data-bs-target="#exampleModal"
+              >
+                Login
               </button>
-              <div class="collapse navbar-collapse justify-content-between" id="navbarNav">
-                <ul class="navbar-nav">
-                  <li class="nav-item">
-                    <a class="nav-link active" href="#">Home</a>
-                  </li>
-                  <li class="nav-item">
-                    <a class="nav-link" href="#">Profile</a>
-                  </li>
-                </ul>
-                <div class="d-flex gap-2">
-                  <button class="btn btn-primary px-4">Login</button>
-                  <button class="btn btn-primary px-4">Register</button>
-                </div>
-              </div>
+              <button class="btn btn-primary px-4">Register</button>
             </div>
-          </nav>
-     </div>
- 
+          </div>
+        </div>
+      </nav>
+    </div>
 
     <!-- Main Content -->
     <div class="container d-flex justify-content-center mt-5">
       <!-- Posts -->
-        <div id="posts" class="col-9">
+      <div id="posts" class="col-9">
         <!-- Post -->
         <div class="card shadow my-4">
-            <div class="card-header">
-              <img src="./assets/images/user.png" alt="user" width="40" height="40" class="rounded-circle border border-3" />
-              <b>Al-Shaikh</b>
+          <div class="card-header">
+            <img
+              src="./assets/images/user.png"
+              alt="user"
+              width="40"
+              height="40"
+              class="rounded-circle border border-3"
+            />
+            <b>Al-Shaikh</b>
+          </div>
+          <div class="card-body">
+            <div class="image-container">
+              <img src="./assets/images/post.jpeg" alt="post" />
             </div>
-            <div class="card-body">
-              <!-- حاوية الصورة -->
-              <div class="image-container">
-                <img src="./assets/images/post.jpeg" alt="post">
-              </div>
-              <h6 class="mt-1 text-secondary">2 min ago</h6>
-              <h4>Hi Everyone!</h4>
-              <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Corporis impedit laudantium rem obcaecati nesciunt quo iusto optio accusantium atque repellat, fugit dolore? Veritatis temporibus necessitatibus ipsam id eveniet totam ratione.</p>
-              <hr>
-              <div>
-                <i class="bi bi-pencil-square"></i>
-                <span>(3) Comments</span>
-              </div>
+            <h6 class="mt-1 text-secondary">2 min ago</h6>
+            <h4>Hi Everyone!</h4>
+            <p>
+              Lorem ipsum dolor sit amet consectetur adipisicing elit. Corporis
+              impedit laudantium rem obcaecati nesciunt quo iusto optio
+              accusantium atque repellat, fugit dolore? Veritatis temporibus
+              necessitatibus ipsam id eveniet totam ratione.
+            </p>
+            <hr />
+            <div>
+              <i class="bi bi-pencil-square"></i>
+              <span>(3) Comments</span>
             </div>
           </div>
+        </div>
+      </div>
     </div>
+
+    <!-- Modals -->
+    <!-- login Modal -->
+    <div
+      class="modal fade"
+      id="exampleModal"
+      tabindex="-1"
+      aria-labelledby="exampleModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h1 class="modal-title fs-5" id="exampleModalLabel">Login</h1>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <form>
+              <div class="mb-3">
+                <label for="username-input" class="col-form-label"
+                  >Username</label
+                >
+                <input
+                  type="text"
+                  class="form-control"
+                  id="username-input"
+                  required
+                />
+              </div>
+              <div class="mb-3">
+                <label for="pass" class="col-form-label">Password</label>
+                <input
+                  type="password"
+                  class="form-control"
+                  id="password-input"
+                  required
+                />
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-bs-dismiss="modal"
+            >
+              Close
+            </button>
+            <button type="button" class="btn btn-primary" onclick="loginBtn()">
+              Login
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      const baseURL = "https://tarmeezacademy.com/api/v1";
+      axios.get(`${baseURL}/posts?limit=5`).then((response) => {
+        let posts = response.data.data;
+        document.getElementById("posts").innerHTML = "";
+        for (let post of posts) {
+          let author = post.author;
+          let postTitle = "";
+
+          if (post.title != null) {
+            postTitle = post.title;
+          }
+
+          let postContent = `
+          <div class="card shadow my-4">
+          <div class="card-header">
+            <img
+              src="${author.profile_image}"
+              alt="user"
+              width="40"
+              height="40"
+              class="rounded-circle border border-3"
+            />
+            <b>${author.username}</b>
+          </div>
+          <div class="card-body">
+            <div class="image-container">
+              <img src="${post.image}" alt="post" />
+            </div>
+            <h6 class="mt-1 text-secondary">${post.created_at}</h6>
+            <h4>${postTitle}</h4>
+            <p>
+              ${post.body}
+            </p>
+            <hr />
+            <div>
+              <i class="bi bi-pencil-square"></i>
+              <span>(${post.comments_count}) Comments</span>
+            </div>
+          </div>
+        </div>
+
+        `;
+          document.getElementById("posts").innerHTML += postContent;
+        }
+      });
+
+      function loginBtn() {
+        let username = document.getElementById("username-input").value;
+        let password = document.getElementById("password-input").value;
+
+        let params = {
+          username: username,
+          password: password,
+        };
+        let url = `${baseURL}/login`
+        axios.post(url,params)
+        .then(response=>{
+          alert("You login")
+        })
+      }
+    </script>
   </body>
 </html>
