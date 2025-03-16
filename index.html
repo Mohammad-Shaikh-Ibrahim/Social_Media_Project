@@ -64,15 +64,29 @@
                 <a class="nav-link" href="#">Profile</a>
               </li>
             </ul>
-            <div class="d-flex gap-2">
+            <!-- not loggedin user -->
+            <div class="d-flex gap-2" id="loginDiv">
               <button
+                id="loginBtn"
                 class="btn btn-primary px-4"
                 data-bs-toggle="modal"
-                data-bs-target="#exampleModal"
+                data-bs-target="#login-modal"
               >
                 Login
               </button>
-              <button class="btn btn-primary px-4">Register</button>
+              <button id="registerBtn" class="btn btn-primary px-4">
+                Register
+              </button>
+            </div>
+            <!-- Loggedin User -->
+            <div class="d-flex gap-2" id="logoutDiv">
+              <button
+                onclick="logoutClick()"
+                id="logoutBtn"
+                class="btn btn-primary px-4"
+              >
+                Log Out
+              </button>
             </div>
           </div>
         </div>
@@ -121,7 +135,7 @@
     <!-- login Modal -->
     <div
       class="modal fade"
-      id="exampleModal"
+      id="login-modal"
       tabindex="-1"
       aria-labelledby="exampleModalLabel"
       aria-hidden="true"
@@ -169,15 +183,20 @@
             >
               Close
             </button>
-            <button type="button" class="btn btn-primary" onclick="loginBtn()">
+            <button type="button" class="btn btn-primary" onclick="loginBtnClick()">
               Login
             </button>
           </div>
         </div>
       </div>
     </div>
+    <!-- Alerts -->
+    <!--success-alert  -->
+    <div id="success-alert"></div>
 
     <script>
+      setupUi();
+
       const baseURL = "https://tarmeezacademy.com/api/v1";
       axios.get(`${baseURL}/posts?limit=5`).then((response) => {
         let posts = response.data.data;
@@ -224,7 +243,7 @@
         }
       });
 
-      function loginBtn() {
+      function loginBtnClick() {
         let username = document.getElementById("username-input").value;
         let password = document.getElementById("password-input").value;
 
@@ -232,11 +251,59 @@
           username: username,
           password: password,
         };
-        let url = `${baseURL}/login`
-        axios.post(url,params)
-        .then(response=>{
-          alert("You login")
-        })
+        let url = `${baseURL}/login`;
+        axios.post(url, params).then((response) => {
+          let token = response.data.token;
+          let user = response.data.user;
+          localStorage.setItem("Token", token);
+          localStorage.setItem("User", JSON.stringify(user));
+
+          const loginModal = document.getElementById("login-modal");
+          const modalInstance = bootstrap.Modal.getInstance(loginModal);
+          modalInstance.hide();
+          setupUi();
+        });
+      }
+
+      function logoutClick() {
+        localStorage.removeItem("Token");
+        localStorage.removeItem("User");
+      }
+
+      function showSuccessAlert() {
+        const alertPlaceholder = document.getElementById("success-alert");
+        const appendAlert = (message, type) => {
+          const wrapper = document.createElement("div");
+          wrapper.innerHTML = [
+            `<div class="alert alert-${type} alert-dismissible" role="alert">`,
+            `   <div>${message}</div>`,
+            '   <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>',
+            "</div>",
+          ].join("");
+
+          alertPlaceholder.append(wrapper);
+        };
+
+        const alertTrigger = document.getElementById("liveAlertBtn");
+        if (alertTrigger) {
+          alertTrigger.addEventListener("click", () => {
+            appendAlert("Nice, you triggered this alert message!", "success");
+          });
+        }
+      }
+
+      function setupUi() {
+        const token = localStorage.getItem("Token");
+        const loginDiv = document.getElementById("loginDiv");
+        const logoutDiv = document.getElementById("logoutDiv");
+
+        if (token == null) {
+          loginDiv.style.setProperty("display", "flex", "important");
+          logoutDiv.style.setProperty("display", "none", "important");
+        } else {
+          loginDiv.style.setProperty("display", "none", "important");
+          logoutDiv.style.setProperty("display", "flex", "important");
+        }
       }
     </script>
   </body>
