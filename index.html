@@ -6,40 +6,44 @@
     <link
       rel="icon"
       type="image/svg+xml"
-      href="./assets/images/logo.jpg"
+      href="./assets/images/logo.webp"
       sizes="32x32"
     />
     <title>Home</title>
-    <!-- Bootstrap -->
+    <!-- Bootstrap CSS -->
     <link
       rel="stylesheet"
       href="./node_modules/bootstrap/dist/css/bootstrap.min.css"
     />
-    <script src="./node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
+    <!-- Bootstrap Icons -->
     <link
       rel="stylesheet"
       href="./node_modules/bootstrap-icons/font/bootstrap-icons.min.css"
     />
-    <script src="./node_modules/axios/dist/axios.js"></script>
-    <script type="module" src="index.js"></script>
-
     <!-- Custom CSS -->
     <link rel="stylesheet" href="./assets/CSS/home.css" />
   </head>
   <body>
+    <!-- Alerts -->
+    <!-- success-alert -->
+    <div
+      id="success-alert"
+      class="show fade"
+      style="position: fixed; z-index: 999999; width: 30%; bottom: 0; right: 0"
+    ></div>
     <!-- Navbar -->
     <div class="container">
       <nav class="navbar navbar-expand-lg rounded-bottom-3">
         <div class="container">
           <a class="navbar-brand d-flex align-items-center" href="#">
             <img
-              src="./assets/images/logo.jpg"
+              src="./assets/images/logo.webp"
               alt="Linkora Logo"
               width="60"
               height="60"
               class="me-2 rounded-circle"
             />
-            <span>Linkora</span>
+            <span>Aurora</span>
           </a>
           <button
             class="navbar-toggler"
@@ -64,7 +68,7 @@
                 <a class="nav-link" href="#">Profile</a>
               </li>
             </ul>
-            <!-- not loggedin user -->
+            <!-- not logged in user -->
             <div class="d-flex gap-2" id="loginDiv">
               <button
                 id="loginBtn"
@@ -74,11 +78,16 @@
               >
                 Login
               </button>
-              <button id="registerBtn" class="btn btn-primary px-4">
+              <button
+                id="registerBtn"
+                class="btn btn-primary px-4"
+                data-bs-toggle="modal"
+                data-bs-target="#register-modal"
+              >
                 Register
               </button>
             </div>
-            <!-- Loggedin User -->
+            <!-- Logged in User -->
             <div class="d-flex gap-2" id="logoutDiv">
               <button
                 onclick="logoutClick()"
@@ -132,18 +141,20 @@
     </div>
 
     <!-- Modals -->
-    <!-- login Modal -->
+    <!-- Login Modal -->
     <div
       class="modal fade"
       id="login-modal"
       tabindex="-1"
-      aria-labelledby="exampleModalLabel"
+      aria-labelledby="loginModalLabel"
       aria-hidden="true"
     >
       <div class="modal-dialog">
         <div class="modal-content">
           <div class="modal-header">
-            <h1 class="modal-title fs-5" id="exampleModalLabel">Login</h1>
+            <h1 class="modal-title fs-5" id="exampleModalLabelForLogin">
+              Login
+            </h1>
             <button
               type="button"
               class="btn-close"
@@ -183,126 +194,262 @@
             >
               Close
             </button>
-            <button type="button" class="btn btn-primary" onclick="loginBtnClick()">
+            <button
+              type="button"
+              class="btn btn-primary"
+              onclick="loginBtnClick()"
+            >
               Login
             </button>
           </div>
         </div>
       </div>
     </div>
-    <!-- Alerts -->
-    <!--success-alert  -->
-    <div id="success-alert"></div>
-
-    <script>
-      setupUi();
-
-      const baseURL = "https://tarmeezacademy.com/api/v1";
-      axios.get(`${baseURL}/posts?limit=5`).then((response) => {
-        let posts = response.data.data;
-        document.getElementById("posts").innerHTML = "";
-        for (let post of posts) {
-          let author = post.author;
-          let postTitle = "";
-
-          if (post.title != null) {
-            postTitle = post.title;
-          }
-
-          let postContent = `
-          <div class="card shadow my-4">
-          <div class="card-header">
-            <img
-              src="${author.profile_image}"
-              alt="user"
-              width="40"
-              height="40"
-              class="rounded-circle border border-3"
-            />
-            <b>${author.username}</b>
+    <!-- Register Modal -->
+    <div
+      class="modal fade"
+      id="register-modal"
+      tabindex="-1"
+      aria-labelledby="registerModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h1 class="modal-title fs-5" id="exampleModalLabelForRegister">
+              Register
+            </h1>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
           </div>
-          <div class="card-body">
-            <div class="image-container">
-              <img src="${post.image}" alt="post" />
-            </div>
-            <h6 class="mt-1 text-secondary">${post.created_at}</h6>
-            <h4>${postTitle}</h4>
-            <p>
-              ${post.body}
-            </p>
-            <hr />
-            <div>
-              <i class="bi bi-pencil-square"></i>
-              <span>(${post.comments_count}) Comments</span>
-            </div>
+          <div class="modal-body">
+            <form>
+              <div class="mb-3">
+                <label for="register-name-input" class="col-form-label"
+                  >Name
+                </label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="register-name-input"
+                  required
+                />
+              </div>
+              <div class="mb-3">
+                <label for="register-username-input" class="col-form-label"
+                  >Username
+                </label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="register-username-input"
+                  required
+                />
+              </div>
+              <div class="mb-3">
+                <label for="register-password-input" class="col-form-label"
+                  >Password</label
+                >
+                <input
+                  type="password"
+                  class="form-control"
+                  id="register-password-input"
+                  required
+                />
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-bs-dismiss="modal"
+            >
+              Close
+            </button>
+            <button
+              type="button"
+              class="btn btn-primary"
+              onclick="registerBtnClick()"
+            >
+              Register
+            </button>
           </div>
         </div>
+      </div>
+    </div>
 
-        `;
-          document.getElementById("posts").innerHTML += postContent;
-        }
+    <!-- Scripts -->
+    <!-- Bootstrap for JS -->
+    <script src="./node_modules/bootstrap/dist/js/bootstrap.js"></script>
+    <!-- Axios -->
+    <script src="./node_modules/axios/dist/axios.js"></script>
+    <!-- Custom JS -->
+    <!-- <script type="module" src="index.js" defer></script> -->
+
+    <script>
+      const baseURL = "https://tarmeezacademy.com/api/v1";
+
+      // Load posts when the page starts
+      document.addEventListener("DOMContentLoaded", () => {
+        fetchPosts();
+        setupUi();
       });
 
-      function loginBtnClick() {
-        let username = document.getElementById("username-input").value;
-        let password = document.getElementById("password-input").value;
+      function fetchPosts() {
+        axios.get(`${baseURL}/posts?limit=5`).then((response) => {
+          let posts = response.data.data;
+          document.getElementById("posts").innerHTML = "";
 
-        let params = {
-          username: username,
-          password: password,
-        };
-        let url = `${baseURL}/login`;
+          for (let post of posts) {
+            let author = post.author;
+            let postTitle = post.title ? post.title : "";
+            let tagsContent = post.tags
+              .map(
+                (tag) => `
+              <button class="btn btn-sm rounded-5" style="background-color:gray; color: white;">
+                ${tag.name}
+              </button>`
+              )
+              .join("");
+
+            let postContent = `
+              <div class="card shadow my-4">
+                <div class="card-header">
+                  <img src="${author.profile_image}" alt="user" width="40" height="40"
+                    class="rounded-circle border border-3" />
+                  <b>${author.username}</b>
+                </div>
+                <div class="card-body">
+                  <div class="image-container">
+                    <img src="${post.image}" alt="post" />
+                  </div>
+                  <h6 class="mt-1 text-secondary">${post.created_at}</h6>
+                  <h4>${postTitle}</h4>
+                  <p>${post.body}</p>
+                  <hr />
+                  <div>
+                    <i class="bi bi-pencil-square"></i>
+                    <span>(${post.comments_count}) Comments ${tagsContent}</span>
+                  </div>
+                </div>
+              </div>
+            `;
+
+            document.getElementById("posts").innerHTML += postContent;
+          }
+        });
+      }
+      // Update the UI based on login status
+      function setupUi() {
+        const token = localStorage.getItem("Token");
+
+        const loginDiv = document.getElementById("loginDiv");
+        const logoutDiv = document.getElementById("logoutDiv");
+
+        // add btn
+        const addBtn = document.getElementById("add-btn");
+
+        if (token == null) {
+          // user is guest (not logged in)
+          if (addBtn != null) {
+            addBtn.style.setProperty("display", "none", "important");
+          }
+
+          loginDiv.style.setProperty("display", "flex", "important");
+          logoutDiv.style.setProperty("display", "none", "important");
+        } else {
+          // for logged in user
+
+          if (addBtn != null) {
+            addBtn.style.setProperty("display", "block", "important");
+          }
+
+          loginDiv.style.setProperty("display", "none", "important");
+          logoutDiv.style.setProperty("display", "flex", "important");
+
+          const user = getCurrentUser();
+          document.getElementById("nav-username").innerHTML = user.username;
+          document.getElementById("nav-user-image").src = user.profile_image;
+        }
+      }
+
+      // Display a custom alert message
+      function showAlert(message, type) {
+        const alertPlaceholder = document.getElementById("success-alert");
+        const alertBox = document.createElement("div");
+        alertBox.innerHTML = `
+          <div class="alert alert-${type} alert-dismissible" role="alert">
+            <div>${message}</div>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+          </div>`;
+        alertPlaceholder.append(alertBox);
+
+        setTimeout(() => {
+          alertBox.remove();
+        }, 2500);
+      }
+
+      // Register a new user
+      function registerBtnClick() {
+        let name = document.getElementById("register-name-input").value;
+        let username = document.getElementById("register-username-input").value;
+        let password = document.getElementById("register-password-input").value;
+
+        let params = { username, password, name };
+        let url = `${baseURL}/register`;
+
         axios.post(url, params).then((response) => {
           let token = response.data.token;
           let user = response.data.user;
           localStorage.setItem("Token", token);
           localStorage.setItem("User", JSON.stringify(user));
 
-          const loginModal = document.getElementById("login-modal");
-          const modalInstance = bootstrap.Modal.getInstance(loginModal);
-          modalInstance.hide();
+          hideModal("register-modal");
+          showAlert("Your account was registered successfully!", "success");
           setupUi();
         });
       }
 
+      // Log in
+      function loginBtnClick() {
+        let username = document.getElementById("username-input").value;
+        let password = document.getElementById("password-input").value;
+
+        let params = { username, password };
+        let url = `${baseURL}/login`;
+
+        axios.post(url, params).then((response) => {
+          let token = response.data.token;
+          let user = response.data.user;
+          localStorage.setItem("Token", token);
+          localStorage.setItem("User", JSON.stringify(user));
+
+          hideModal("login-modal");
+          showAlert("Logged in successfully!", "success");
+          setupUi();
+        });
+      }
+
+      // Log out
       function logoutClick() {
         localStorage.removeItem("Token");
         localStorage.removeItem("User");
+
+        showAlert("Logged out successfully!", "success");
+        setupUi();
       }
 
-      function showSuccessAlert() {
-        const alertPlaceholder = document.getElementById("success-alert");
-        const appendAlert = (message, type) => {
-          const wrapper = document.createElement("div");
-          wrapper.innerHTML = [
-            `<div class="alert alert-${type} alert-dismissible" role="alert">`,
-            `   <div>${message}</div>`,
-            '   <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>',
-            "</div>",
-          ].join("");
-
-          alertPlaceholder.append(wrapper);
-        };
-
-        const alertTrigger = document.getElementById("liveAlertBtn");
-        if (alertTrigger) {
-          alertTrigger.addEventListener("click", () => {
-            appendAlert("Nice, you triggered this alert message!", "success");
-          });
-        }
-      }
-
-      function setupUi() {
-        const token = localStorage.getItem("Token");
-        const loginDiv = document.getElementById("loginDiv");
-        const logoutDiv = document.getElementById("logoutDiv");
-
-        if (token == null) {
-          loginDiv.style.setProperty("display", "flex", "important");
-          logoutDiv.style.setProperty("display", "none", "important");
-        } else {
-          loginDiv.style.setProperty("display", "none", "important");
-          logoutDiv.style.setProperty("display", "flex", "important");
+      // Hide the modal after the operation
+      function hideModal(modalId) {
+        const modalElement = document.getElementById(modalId);
+        const modalInstance = bootstrap.Modal.getInstance(modalElement);
+        if (modalInstance) {
+          modalInstance.hide();
         }
       }
     </script>
