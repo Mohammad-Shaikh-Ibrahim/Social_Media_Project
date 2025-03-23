@@ -31,11 +31,21 @@
       class="show fade"
       style="position: fixed; z-index: 999999; width: 30%; bottom: 0; right: 0"
     ></div>
+
+    <!-- Add Button -->
+    <div
+      class="bg-primary"
+      id="add-btn"
+      data-bs-toggle="modal"
+      data-bs-target="#create-post-modal"
+    >
+      +
+    </div>
     <!-- Navbar -->
     <div class="container">
       <nav class="navbar navbar-expand-lg rounded-bottom-3">
         <div class="container">
-          <a class="navbar-brand d-flex align-items-center" href="#">
+          <a class="navbar-brand d-flex align-items-center" href="index.html">
             <img
               src="./assets/images/logo.webp"
               alt="Linkora Logo"
@@ -62,7 +72,7 @@
           >
             <ul class="navbar-nav">
               <li class="nav-item">
-                <a class="nav-link active" href="#">Home</a>
+                <a class="nav-link active" href="#index.html">Home</a>
               </li>
               <li class="nav-item">
                 <a class="nav-link" href="#">Profile</a>
@@ -105,7 +115,7 @@
     <!-- Main Content -->
     <div class="container d-flex justify-content-center mt-5">
       <!-- Posts -->
-      <div id="posts" class="col-9">
+      <div id="posts" class="col-8">
         <!-- Post -->
         <div class="card shadow my-4">
           <div class="card-header">
@@ -282,6 +292,75 @@
         </div>
       </div>
     </div>
+    <!-- Create Post Modal -->
+    <div
+      class="modal fade"
+      id="create-post-modal"
+      tabindex="-1"
+      aria-labelledby="postModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h1 class="modal-title fs-5" id="exampleModalLabelForCreatePost">
+              Create a New Post
+            </h1>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <form>
+              <div class="mb-3">
+                <label for="post-title-input" class="col-form-label"
+                  >Title</label
+                >
+                <input
+                  type="text"
+                  class="form-control"
+                  id="post-title-input"
+                  required
+                />
+              </div>
+              <div class="mb-3">
+                <textarea name="" id="post-body-input"></textarea>
+              </div>
+              <div class="mb-3">
+                <label for="post-image-input" class="col-form-label"
+                  >Image</label
+                >
+                <input
+                  type="file"
+                  class="form-control"
+                  id="post-image-input"
+                  required
+                />
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-bs-dismiss="modal"
+            >
+              Close
+            </button>
+            <button
+              type="button"
+              class="btn btn-primary"
+              onclick="createNewPostClicked()"
+            >
+              Add
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
 
     <!-- Scripts -->
     <!-- Bootstrap for JS -->
@@ -301,7 +380,7 @@
       });
 
       function fetchPosts() {
-        axios.get(`${baseURL}/posts?limit=5`).then((response) => {
+        axios.get(`${baseURL}/posts?limit=10`).then((response) => {
           let posts = response.data.data;
           document.getElementById("posts").innerHTML = "";
 
@@ -403,16 +482,22 @@
         let params = { username, password, name };
         let url = `${baseURL}/register`;
 
-        axios.post(url, params).then((response) => {
-          let token = response.data.token;
-          let user = response.data.user;
-          localStorage.setItem("Token", token);
-          localStorage.setItem("User", JSON.stringify(user));
+        axios
+          .post(url, params)
+          .then((response) => {
+            let token = response.data.token;
+            let user = response.data.user;
+            localStorage.setItem("Token", token);
+            localStorage.setItem("User", JSON.stringify(user));
 
-          hideModal("register-modal");
-          showAlert("Your account was registered successfully!", "success");
-          setupUi();
-        });
+            hideModal("register-modal");
+            showAlert("Your account was registered successfully!", "success");
+            setupUi();
+          })
+          .catch((error) => {
+            let message = error.response.data.message;
+            showAlert(message, "danger");
+          });
       }
 
       // Log in
@@ -423,16 +508,22 @@
         let params = { username, password };
         let url = `${baseURL}/login`;
 
-        axios.post(url, params).then((response) => {
-          let token = response.data.token;
-          let user = response.data.user;
-          localStorage.setItem("Token", token);
-          localStorage.setItem("User", JSON.stringify(user));
+        axios
+          .post(url, params)
+          .then((response) => {
+            let token = response.data.token;
+            let user = response.data.user;
+            localStorage.setItem("Token", token);
+            localStorage.setItem("User", JSON.stringify(user));
 
-          hideModal("login-modal");
-          showAlert("Logged in successfully!", "success");
-          setupUi();
-        });
+            hideModal("login-modal");
+            showAlert("Logged in successfully!", "success");
+            setupUi();
+          })
+          .catch((error) => {
+            let message = error.response.data.message;
+            showAlert(message, "danger");
+          });
       }
 
       // Log out
@@ -451,6 +542,38 @@
         if (modalInstance) {
           modalInstance.hide();
         }
+      }
+
+      // Create New Post
+      function createNewPostClicked() {
+        let title = document.getElementById("post-title-input").value;
+        let body = document.getElementById("post-body-input").value;
+        let image = document.getElementById("post-image-input").files[0];
+
+        let url = `${baseURL}/posts`;
+
+        let formData = new FormData();
+        formData.append("title", title);
+        formData.append("body", body);
+        formData.append("image", image);
+
+        let token = localStorage.getItem("Token");
+        let headers = {
+          "Content-Type": "multipart/form-data",
+          authorization: `Bearer ${token}`,
+        };
+
+        axios
+          .post(url, formData, { headers })
+          .then((response) => {
+            hideModal("create-post-modal");
+            showAlert("You Added New Post Successfully!", "success");
+            fetchPosts();
+          })
+          .catch((error) => {
+            let message = error.response.data.message;
+            showAlert(message, "danger");
+          });
       }
     </script>
   </body>
