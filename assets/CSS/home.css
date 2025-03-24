@@ -47,6 +47,17 @@ body {
   color: var(--custom-primary);
 }
 
+#nav-username{
+  line-height: 2.5;
+  margin: 0 5px;
+}
+
+#nav-user-image{
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+}
+
 /* Buttons customization */
 .btn-primary {
   background-color: var(--custom-primary);

@@ -99,10 +99,13 @@
             </div>
             <!-- Logged in User -->
             <div class="d-flex gap-2" id="logoutDiv">
+              <!-- Profile Image -->
+              <img id="nav-user-image" src="./assets/images/user.png" alt="" />
+              <b id="nav-username">@AlShaikh</b>
               <button
                 onclick="logoutClick()"
                 id="logoutBtn"
-                class="btn btn-primary px-4"
+                class="btn btn-danger px-4"
               >
                 Log Out
               </button>
@@ -227,7 +230,7 @@
         <div class="modal-content">
           <div class="modal-header">
             <h1 class="modal-title fs-5" id="exampleModalLabelForRegister">
-              Register
+              Create New User
             </h1>
             <button
               type="button"
@@ -239,6 +242,15 @@
           <div class="modal-body">
             <form>
               <div class="mb-3">
+                <label for="register-image-input" class="col-form-label"
+                  >Profile Image
+                </label>
+                <input
+                  type="file"
+                  class="form-control"
+                  id="register-image-input"
+                  required
+                />
                 <label for="register-name-input" class="col-form-label"
                   >Name
                 </label>
@@ -379,6 +391,7 @@
         setupUi();
       });
 
+      // Get Posts
       function fetchPosts() {
         axios.get(`${baseURL}/posts?limit=10`).then((response) => {
           let posts = response.data.data;
@@ -475,15 +488,25 @@
 
       // Register a new user
       function registerBtnClick() {
+        let image = document.getElementById("register-image-input").files[0];
         let name = document.getElementById("register-name-input").value;
         let username = document.getElementById("register-username-input").value;
         let password = document.getElementById("register-password-input").value;
 
-        let params = { username, password, name };
+        let formData = new FormData();
+        formData.append("image", image);
+        formData.append("name", name);
+        formData.append("username", username);
+        formData.append("password", password);
+
+        let headers = {
+          "Content-Type": "multipart/form-data",
+        };
+
         let url = `${baseURL}/register`;
 
         axios
-          .post(url, params)
+          .post(url,formData,{headers})
           .then((response) => {
             let token = response.data.token;
             let user = response.data.user;
@@ -491,7 +514,7 @@
             localStorage.setItem("User", JSON.stringify(user));
 
             hideModal("register-modal");
-            showAlert("Your account was registered successfully!", "success");
+            showAlert("Your Account Was Created Successfully!", "success");
             setupUi();
           })
           .catch((error) => {
@@ -574,6 +597,15 @@
             let message = error.response.data.message;
             showAlert(message, "danger");
           });
+      }
+
+      function getCurrentUser() {
+        let user = null;
+        const storageUser = localStorage.getItem("User");
+        if (storageUser != null) {
+          user = JSON.parse(storageUser);
+        }
+        return user;
       }
     </script>
   </body>
