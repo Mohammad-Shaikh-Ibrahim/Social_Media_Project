@@ -384,6 +384,8 @@
 
     <script>
       const baseURL = "https://tarmeezacademy.com/api/v1";
+      let currentPage = 1;
+      let lastPage = 1;
 
       // Load posts when the page starts
       document.addEventListener("DOMContentLoaded", () => {
@@ -391,11 +393,25 @@
         setupUi();
       });
 
+      //Infinite Scroll
+      window.addEventListener("scroll", function () {
+        const endOfPage =
+          window.innerHeight + window.pageYOffset >= document.body.offsetHeight;
+        if (endOfPage && currentPage < lastPage) {
+          currentPage = currentPage + 1;
+          fetchPosts(false, currentPage);
+        }
+      });
       // Get Posts
-      function fetchPosts() {
-        axios.get(`${baseURL}/posts?limit=10`).then((response) => {
+      function fetchPosts(reload = true, page = 1) {
+        axios.get(`${baseURL}/posts?limit=10&page=${page}`).then((response) => {
           let posts = response.data.data;
-          document.getElementById("posts").innerHTML = "";
+
+          lastPage =response.data.meta.last_page
+
+          if (reload) {
+            document.getElementById("posts").innerHTML = "";
+          }
 
           for (let post of posts) {
             let author = post.author;
@@ -506,7 +522,7 @@
         let url = `${baseURL}/register`;
 
         axios
-          .post(url,formData,{headers})
+          .post(url, formData, { headers })
           .then((response) => {
             let token = response.data.token;
             let user = response.data.user;
