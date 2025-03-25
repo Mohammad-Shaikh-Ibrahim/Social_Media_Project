@@ -110,6 +110,7 @@ body {
 
 .card-body {
   padding: 20px;
+  cursor: pointer;
 }
 
 .card-body h4 {
@@ -143,21 +144,82 @@ body {
 }
 
 .image-container:hover img {
-  transform: scale(1.1);
+  transform: scale(1.05);
 }
 
 /* Comments customization */
-.comments-section {
-  margin-top: 15px;
-  padding: 10px;
-  background-color: var(--custom-light);
+/* Container for all comments */
+#comments {
+  margin-top: 30px;
+  padding: 15px;
+  background-color: #fff;
+  border: 1px solid #e2e8f0;
   border-radius: 10px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
 }
 
-.comments-section i {
-  color: var(--custom-primary);
-  margin-right: 5px;
+/* Individual comment styling */
+.comment {
+  display: flex;
+  align-items: flex-start;
+  gap: 15px;
+  padding: 15px 0;
+  border-bottom: 1px solid #e2e8f0;
+  transition: background-color 0.3s ease;
 }
+
+.comment:last-child {
+  border-bottom: none;
+}
+
+.comment:hover {
+  background-color: #f9fafb;
+}
+
+/* Profile image container */
+.comment-img {
+  flex-shrink: 0;
+}
+
+.comment-img img {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  border: 2px solid var(--custom-primary);
+  object-fit: cover;
+}
+
+/* Comment content */
+.comment-content {
+  flex: 1;
+}
+
+/* Comment header: username and time */
+.comment-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.comment-username {
+  font-weight: 600;
+  color: var(--custom-dark);
+}
+
+.comment-time {
+  font-size: 0.85rem;
+  color: #718096;
+}
+
+/* Comment body */
+.comment-body {
+  font-size: 1rem;
+  color: #2d3748;
+  line-height: 1.5;
+  margin: 0;
+}
+
 
 /* Modals customization */
 .modal-content {
@@ -230,6 +292,13 @@ body {
 }
 
 /* Alerts customization */
+#success-alert{
+  position: fixed; 
+  z-index: 999999; 
+  width: 30%;
+  bottom: 0; 
+  right: 0
+}
 .alert {
   border-radius: 10px;
   padding: 10px 20px;
@@ -290,7 +359,7 @@ body {
   box-shadow: 0px 15px 20px rgba(0, 0, 0, 0.3);
 }
 
-/* Optional: add a pulse animation to draw extra attention */
+/* add a pulse animation to draw extra attention */
 @keyframes pulse {
   0% {
     transform: scale(1);
